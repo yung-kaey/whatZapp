@@ -20,68 +20,72 @@
     }
 
     /* WALLPAPER */
-    .wallpaper-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: #0b141a; }
-    .wallpaper-img { position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; opacity: 0; transition: opacity 0.4s; }
+    .wallpaper-layer {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background: #0b141a;
+    }
+    .wallpaper-img {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1; opacity: 0; transition: opacity 0.4s;
+    }
 
     /* SIDEBAR */
     .sidebar {
-        width: 35%;
-        min-width: 280px;
+        width: 100%;
         background: rgba(32, 44, 51, 0.95);
-        backdrop-filter: blur(10px);
+        color: white;
+        overflow-y: auto;
         display: flex;
         flex-direction: column;
-        border-right: 1px solid rgba(255,255,255,0.1);
         z-index: 10;
     }
     .logo {
-        padding: 18px 20px;
-        font-size: 26px;
+        padding: 20px;
+        font-size: 28px;
         font-weight: bold;
         color: #25d366;
         border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-    .search { padding: 12px; }
+    .search { padding: 10px; }
     .search input {
         width: 100%;
-        padding: 12px 16px;
+        padding: 12px;
         border: none;
-        border-radius: 30px;
-        background: rgba(42,57,66,0.9);
+        border-radius: 28px;
+        background: rgba(42, 57, 66, 0.9);
         color: white;
     }
 
-    .chat-list { flex: 1; overflow-y: auto; }
     .chat-item {
-        padding: 14px 20px;
+        padding: 14px;
+        border-bottom: 1px solid rgba(42, 57, 66, 0.6);
+        cursor: pointer;
         display: flex;
         gap: 12px;
         align-items: center;
-        cursor: pointer;
-        border-bottom: 1px solid rgba(42,57,66,0.6);
     }
-    .chat-item:hover { background: rgba(42,57,66,0.8); }
+    .chat-item:hover { background: rgba(42, 57, 66, 0.7); }
 
     .avatar {
-        width: 52px; height: 52px;
+        width: 48px; height: 48px;
         border-radius: 50%;
         background: #075e54;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 24px;
+        font-size: 22px;
         font-weight: bold;
     }
 
-    /* MAIN CHAT AREA */
+    /* MAIN CHAT */
     .main {
         flex: 1;
-        display: flex;
+        display: none;
         flex-direction: column;
         background: transparent;
     }
+    .main.active { display: flex; }
+
     .topbar {
-        background: rgba(32,44,51,0.95);
+        background: rgba(32, 44, 51, 0.95);
         padding: 15px 20px;
         display: flex;
         justify-content: space-between;
@@ -93,27 +97,26 @@
         flex: 1;
         padding: 20px;
         overflow-y: auto;
-        background: rgba(0,0,0,0.35);
+        background: rgba(0, 0, 0, 0.4);
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
     }
 
     .message {
-        padding: 11px 16px;
+        padding: 10px 16px;
         border-radius: 18px;
-        max-width: 75%;
+        max-width: 80%;
         word-wrap: break-word;
     }
-    .sent { align-self: flex-end; background: #00a884; }
-    .received { align-self: flex-start; background: #1f2a32; }
+    .sent { align-self: flex-end; background: rgba(0, 168, 132, 0.9); }
+    .received { align-self: flex-start; background: rgba(31, 42, 50, 0.95); }
 
     .input-area {
-        padding: 12px 15px;
-        background: rgba(32,44,51,0.95);
         display: flex;
+        padding: 12px;
+        background: rgba(32, 44, 51, 0.95);
         gap: 10px;
-        align-items: center;
         border-top: 1px solid rgba(255,255,255,0.1);
     }
     .input-area input {
@@ -121,16 +124,16 @@
         padding: 14px 18px;
         border: none;
         border-radius: 30px;
-        background: rgba(42,57,66,0.9);
+        background: rgba(42, 57, 66, 0.9);
         color: white;
         font-size: 16px;
     }
     .input-area button {
-        padding: 12px 28px;
+        padding: 0 24px;
+        border-radius: 30px;
         background: #25d366;
         color: white;
         border: none;
-        border-radius: 30px;
         font-weight: bold;
         cursor: pointer;
     }
@@ -144,12 +147,6 @@
         width: 90%; max-width: 380px; background: rgba(32,44,51,0.96);
         padding: 32px; border-radius: 28px;
     }
-
-    @media (max-width: 768px) {
-        .sidebar { width: 100%; }
-        .main { display: none; }
-        .main.active { display: flex; width: 100%; }
-    }
 </style>
 </head>
 <body>
@@ -160,20 +157,25 @@
 <!-- AUTH SCREEN -->
 <div id="authScreen" class="auth-screen">
     <div class="auth-box">
-        <h2 style="text-align:center;color:#25d366;margin-bottom:25px;">✨ WhatzApp ✨</h2>
-        <input type="text" id="displayName" placeholder="Display Name" style="width:100%;padding:14px;margin:8px 0;background:#2a3942;border:none;color:white;border-radius:12px;">
-        <input type="email" id="email" placeholder="Email" style="width:100%;padding:14px;margin:8px 0;background:#2a3942;border:none;color:white;border-radius:12px;">
-        <input type="password" id="password" placeholder="Password" style="width:100%;padding:14px;margin:8px 0;background:#2a3942;border:none;color:white;border-radius:12px;">
-        <button onclick="signUp()" style="width:100%;padding:15px;margin:20px 0 10px;background:#25d366;border:none;color:white;border-radius:40px;font-weight:bold;">Sign Up</button>
-        <button onclick="login()" style="width:100%;padding:15px;background:#128c7e;border:none;color:white;border-radius:40px;font-weight:bold;">Login</button>
-        <p id="authMessage" style="text-align:center;margin-top:15px;color:#ff8a7a;"></p>
+        <h2 style="text-align:center;color:#25d366;margin-bottom:20px;">✨ WhatzApp ✨</h2>
+        <input type="text" id="displayName" placeholder="Display Name" style="width:100%;padding:12px;margin:8px 0;background:#2a3942;border:none;color:white;border-radius:12px;">
+        <input type="email" id="email" placeholder="Email" style="width:100%;padding:12px;margin:8px 0;background:#2a3942;border:none;color:white;border-radius:12px;">
+        <input type="password" id="password" placeholder="Password" style="width:100%;padding:12px;margin:8px 0;background:#2a3942;border:none;color:white;border-radius:12px;">
+        <button onclick="signUp()" style="width:100%;padding:14px;margin:15px 0 10px;background:#25d366;border:none;color:white;border-radius:40px;font-weight:bold;cursor:pointer;">Sign Up</button>
+        <button onclick="login()" style="width:100%;padding:14px;background:#128c7e;border:none;color:white;border-radius:40px;font-weight:bold;cursor:pointer;">Login</button>
+        <p id="authMessage" style="text-align:center;margin-top:12px;color:#ff8a7a;"></p>
     </div>
 </div>
 
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
-    <div class="logo">WhatzApp ✨<div id="currentUserName" style="font-size:13px;margin-top:5px;"></div></div>
-    <div class="search"><input type="text" id="searchUsersInput" placeholder="🔍 Search users..."></div>
+    <div class="logo">
+        WhatzApp<span style="font-size:14px;">✨</span>
+        <div id="currentUserName"></div>
+    </div>
+    <div class="search">
+        <input type="text" id="searchUsersInput" placeholder="🔍 Search users...">
+    </div>
     <div class="chat-list" id="chatList"></div>
 </div>
 
@@ -182,13 +184,13 @@
     <div class="topbar">
         <h2 id="chatHeader">💬 Select a chat</h2>
         <div>
-            <button onclick="voiceCall()" style="font-size:24px;background:none;border:none;color:white;margin-right:12px;">📞</button>
-            <button onclick="videoCall()" style="font-size:24px;background:none;border:none;color:white;">🎥</button>
+            <button onclick="voiceCall()" style="background:none;border:none;color:white;font-size:24px;margin-right:10px;">📞</button>
+            <button onclick="videoCall()" style="background:none;border:none;color:white;font-size:24px;margin-right:10px;">🎥</button>
         </div>
     </div>
     <div class="messages" id="messages"></div>
     <div class="input-area">
-        <input type="text" id="messageInput" placeholder="Type a message..." onkeypress="if(event.key === 'Enter') sendMessage()">
+        <input type="text" id="messageInput" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendMessage()">
         <button onclick="sendMessage()">Send</button>
     </div>
 </div>
@@ -198,7 +200,6 @@
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 
 <script>
-// Firebase Config
 const firebaseConfig = {
     apiKey: "AIzaSyAcaYYoGanoGE6kHCOSgssZLG0QKfvsMyg",
     authDomain: "whatzapp-2903d.firebaseapp.com",
@@ -216,7 +217,6 @@ let currentChatId = null;
 let messagesUnsubscribe = null;
 let currentOtherUser = null;
 
-// Auth State
 auth.onAuthStateChanged(async user => {
     if (user) {
         document.getElementById("authScreen").style.display = "none";
@@ -232,9 +232,11 @@ async function signUp() {
     const pass = document.getElementById('password').value;
     try {
         const cred = await auth.createUserWithEmailAndPassword(email, pass);
-        await cred.user.updateProfile({displayName: name});
-        await db.collection("users").doc(cred.user.uid).set({uid: cred.user.uid, displayName: name, email});
-    } catch(e){ document.getElementById("authMessage").textContent = e.message; }
+        await cred.user.updateProfile({ displayName: name });
+        await db.collection("users").doc(cred.user.uid).set({ uid: cred.user.uid, displayName: name || "User", email });
+    } catch (e) {
+        document.getElementById("authMessage").textContent = e.message;
+    }
 }
 
 async function login() {
@@ -242,7 +244,9 @@ async function login() {
     const pass = document.getElementById('password').value;
     try {
         await auth.signInWithEmailAndPassword(email, pass);
-    } catch(e){ document.getElementById("authMessage").textContent = e.message; }
+    } catch (e) {
+        document.getElementById("authMessage").textContent = e.message;
+    }
 }
 
 async function loadUsers() {
@@ -255,10 +259,7 @@ async function loadUsers() {
         if (user.uid === myUid) return;
         const div = document.createElement("div");
         div.className = "chat-item";
-        div.innerHTML = `
-            <div class="avatar">${(user.displayName?.[0] || 'U').toUpperCase()}</div>
-            <div><strong>${user.displayName || "User"}</strong></div>
-        `;
+        div.innerHTML = `<div class="avatar">${(user.displayName?.[0] || 'U').toUpperCase()}</div><div><strong>${user.displayName || "User"}</strong></div>`;
         div.onclick = () => openChat(doc.id, user);
         chatList.appendChild(div);
     });
@@ -267,25 +268,23 @@ async function loadUsers() {
 function openChat(otherId, otherUser) {
     currentOtherUser = otherUser;
     currentChatId = [auth.currentUser.uid, otherId].sort().join('_');
-    document.getElementById("chatHeader").innerHTML = otherUser.displayName || "Chat";
+    document.getElementById("chatHeader").textContent = otherUser.displayName || "Chat";
     document.getElementById("mainChat").classList.add("active");
-    
-    const messagesDiv = document.getElementById("messages");
-    messagesDiv.innerHTML = "";
-    
+    document.getElementById("messages").innerHTML = "";
+
     if (messagesUnsubscribe) messagesUnsubscribe();
     messagesUnsubscribe = db.collection("chats").doc(currentChatId).collection("messages")
-        .orderBy("timestamp")
-        .onSnapshot(snapshot => {
-            messagesDiv.innerHTML = "";
+        .orderBy("timestamp").onSnapshot(snapshot => {
+            const div = document.getElementById("messages");
+            div.innerHTML = "";
             snapshot.forEach(doc => {
                 const msg = doc.data();
-                const div = document.createElement("div");
-                div.className = `message ${msg.sender === auth.currentUser.uid ? "sent" : "received"}`;
-                div.textContent = msg.text;
-                messagesDiv.appendChild(div);
+                const mdiv = document.createElement("div");
+                mdiv.className = `message ${msg.sender === auth.currentUser.uid ? "sent" : "received"}`;
+                mdiv.textContent = msg.text;
+                div.appendChild(mdiv);
             });
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            div.scrollTop = div.scrollHeight;
         });
 }
 
@@ -293,7 +292,7 @@ async function sendMessage() {
     const input = document.getElementById("messageInput");
     const text = input.value.trim();
     if (!text || !currentChatId) return;
-
+    
     await db.collection("chats").doc(currentChatId).collection("messages").add({
         sender: auth.currentUser.uid,
         text: text,
@@ -302,9 +301,8 @@ async function sendMessage() {
     input.value = "";
 }
 
-// Simple calls
-function voiceCall() { alert("Voice call started (Demo)"); }
-function videoCall() { alert("Video call started (Demo)"); }
+function voiceCall() { alert("Voice Call - Demo Mode"); }
+function videoCall() { alert("Video Call - Demo Mode"); }
 </script>
 </body>
 </html>
