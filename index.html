@@ -1,264 +1,240 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>WhatzApp</title>
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
-    }
-    body {
-        background: #0b141a;
-        height: 100vh;
-        display: flex;
-        overflow: hidden;
-    }
-
-    /* FULLSCREEN WALLPAPER */
-    .wallpaper-layer {
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        z-index: -2;
-        background: #0b141a;
-    }
-    .wallpaper-img {
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        object-fit: cover;
-        z-index: -1;
-        opacity: 0;
-        transition: opacity 0.4s;
-    }
-
-    /* On mobile, hide sidebar and show only chat */
-    .sidebar {
-        width: 100%;
-        max-width: 350px;
-        background: rgba(32, 44, 51, 0.95);
-        color: white;
-        overflow-y: auto;
-        display: none;
-        flex-direction: column;
-        z-index: 10;
-    }
-    .main {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        background: transparent;
-    }
-
-    /* Mobile: Show sidebar as full screen when no chat is open */
-    @media (max-width: 768px) {
-        .sidebar { display: flex; width: 100%; }
-        .main { display: none; }
-        .main.active { display: flex; }
-    }
-
-    .logo {
-        padding: 20px;
-        font-size: 28px;
-        font-weight: bold;
-        color: #25d366;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .search { padding: 10px; }
-    .search input {
-        width: 100%;
-        padding: 12px;
-        border: none;
-        border-radius: 28px;
-        background: rgba(42, 57, 66, 0.9);
-        color: white;
-        outline: none;
-    }
-
-    .chat-item {
-        padding: 14px;
-        border-bottom: 1px solid rgba(42, 57, 66, 0.6);
-        cursor: pointer;
-        display: flex;
-        gap: 12px;
-        align-items: center;
-    }
-    .chat-item:hover { background: rgba(42, 57, 66, 0.7); }
-
-    .avatar {
-        width: 48px; height: 48px;
-        border-radius: 50%;
-        background: #075e54;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 22px;
-        font-weight: bold;
-        text-transform: uppercase;
-    }
-
-    .topbar {
-        background: rgba(32, 44, 51, 0.95);
-        padding: 15px 20px;
-        color: white;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .messages {
-        flex: 1;
-        padding: 20px;
-        overflow-y: auto;
-        background: rgba(0, 0, 0, 0.4);
-    }
-
-    .message {
-        background: rgba(0, 92, 75, 0.9);
-        color: white;
-        padding: 10px 16px;
-        border-radius: 18px;
-        margin-bottom: 12px;
-        max-width: 80%;
-        word-wrap: break-word;
-    }
-    .sent {
-        align-self: flex-end;
-        background: rgba(0, 168, 132, 0.9);
-    }
-
-    .input-area {
-        display: flex;
-        padding: 12px;
-        background: rgba(32, 44, 51, 0.95);
-        gap: 10px;
-    }
-    .input-area input {
-        flex: 1;
-        padding: 14px 18px;
-        border: none;
-        border-radius: 30px;
-        background: rgba(42, 57, 66, 0.9);
-        color: white;
-        font-size: 16px;
-    }
-    .input-area button {
-        padding: 0 24px;
-        border-radius: 30px;
-        background: #25d366;
-        color: white;
-        border: none;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .auth-screen {
-        position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background: #0b141a;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 2000;
-    }
-    .auth-box {
-        width: 90%;
-        max-width: 380px;
-        background: rgba(32, 44, 51, 0.96);
-        padding: 32px;
-        border-radius: 28px;
-    }
+&nbsp;&nbsp;&nbsp;&nbsp;* {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;margin: 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding: 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;box-sizing: border-box;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;font-family: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', sans-serif;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;body {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background: #0b141a;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;height: 100vh;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;display: flex;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;overflow: hidden;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;/* FULLSCREEN WALLPAPER */
+&nbsp;&nbsp;&nbsp;&nbsp;.wallpaper-layer {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position: fixed;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;top: 0; left: 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;width: 100%; height: 100%;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z-index: -2;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background: #0b141a;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;.wallpaper-img {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position: fixed;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;top: 0; left: 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;width: 100%; height: 100%;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;object-fit: cover;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z-index: -1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;opacity: 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transition: opacity 0.4s;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;/* On mobile, hide sidebar and show only chat */
+&nbsp;&nbsp;&nbsp;&nbsp;.sidebar {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;width: 100%;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max-width: 350px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background: rgba(32, 44, 51, 0.95);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color: white;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;overflow-y: auto;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;display: none;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flex-direction: column;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z-index: 10;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;.main {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flex: 1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;display: flex;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flex-direction: column;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background: transparent;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;/* Mobile: Show sidebar as full screen when no chat is open */
+&nbsp;&nbsp;&nbsp;&nbsp;@media (max-width: 768px) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.sidebar { display: flex; width: 100%; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.main { display: none; }
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.main.active { display: flex; }
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;.logo {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding: 20px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;font-size: 28px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;font-weight: bold;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color: #25d366;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border-bottom: 1px solid rgba(255,255,255,0.1);
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;.search { padding: 10px; }
+&nbsp;&nbsp;&nbsp;&nbsp;.search input {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;width: 100%;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding: 12px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border: none;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border-radius: 28px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background: rgba(42, 57, 66, 0.9);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color: white;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;outline: none;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;.chat-item {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding: 14px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border-bottom: 1px solid rgba(42, 57, 66, 0.6);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cursor: pointer;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;display: flex;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gap: 12px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;align-items: center;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;.chat-item:hover { background: rgba(42, 57, 66, 0.7); }
+&nbsp;&nbsp;&nbsp;&nbsp;.avatar {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;width: 48px; height: 48px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border-radius: 50%;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background: #075e54;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;display: flex;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;align-items: center;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;justify-content: center;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;font-size: 22px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;font-weight: bold;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;text-transform: uppercase;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;.topbar {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background: rgba(32, 44, 51, 0.95);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding: 15px 20px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color: white;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;display: flex;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;justify-content: space-between;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;align-items: center;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border-bottom: 1px solid rgba(255,255,255,0.1);
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;.messages {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flex: 1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding: 20px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;overflow-y: auto;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background: rgba(0, 0, 0, 0.4);
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;.message {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background: rgba(0, 92, 75, 0.9);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color: white;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding: 10px 16px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border-radius: 18px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;margin-bottom: 12px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max-width: 80%;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;word-wrap: break-word;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;.sent {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;align-self: flex-end;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background: rgba(0, 168, 132, 0.9);
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;.input-area {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;display: flex;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding: 12px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background: rgba(32, 44, 51, 0.95);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gap: 10px;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;.input-area input {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flex: 1;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding: 14px 18px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border: none;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border-radius: 30px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background: rgba(42, 57, 66, 0.9);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color: white;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;font-size: 16px;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;.input-area button {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding: 0 24px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border-radius: 30px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background: #25d366;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;color: white;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border: none;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;font-weight: bold;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cursor: pointer;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;.auth-screen {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position: fixed;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;top: 0; left: 0;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;width: 100%; height: 100%;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background: #0b141a;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;display: flex;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;justify-content: center;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;align-items: center;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;z-index: 2000;
+&nbsp;&nbsp;&nbsp;&nbsp;}
+&nbsp;&nbsp;&nbsp;&nbsp;.auth-box {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;width: 90%;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max-width: 380px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;background: rgba(32, 44, 51, 0.96);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;padding: 32px;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;border-radius: 28px;
+&nbsp;&nbsp;&nbsp;&nbsp;}
 </style>
 </head>
 <body>
-
 <div class="wallpaper-layer" id="wallpaperLayer"></div>
 <img id="fullscreenWallpaperImg" class="wallpaper-img" alt="wallpaper">
-
 <!-- AUTH -->
 <div id="authScreen" class="auth-screen">
-    <div class="auth-box">
-        <h2 style="text-align:center;color:#25d366;margin-bottom:20px;">✨ WhatzApp ✨</h2>
-        <input type="text" id="displayName" placeholder="Display Name" style="width:100%;padding:12px;margin:8px 0;background:#2a3942;border:none;color:white;border-radius:12px;">
-        <input type="email" id="email" placeholder="Email" style="width:100%;padding:12px;margin:8px 0;background:#2a3942;border:none;color:white;border-radius:12px;">
-        <input type="password" id="password" placeholder="Password" style="width:100%;padding:12px;margin:8px 0;background:#2a3942;border:none;color:white;border-radius:12px;">
-        <button onclick="signUp()" style="width:100%;padding:14px;margin:15px 0 10px;background:#25d366;border:none;color:white;border-radius:40px;font-weight:bold;cursor:pointer;">Sign Up</button>
-        <button onclick="login()" style="width:100%;padding:14px;background:#128c7e;border:none;color:white;border-radius:40px;font-weight:bold;cursor:pointer;">Login</button>
-        <p id="authMessage" style="text-align:center;margin-top:12px;color:#ff8a7a;"></p>
-    </div>
+&nbsp;&nbsp;&nbsp;&nbsp;<div class="auth-box">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h2 style="text-align:center;color:#25d366;margin-bottom:20px;">✨ WhatzApp ✨</h2>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="displayName" placeholder="Display Name" style="width:100%;padding:12px;margin:8px 0;background:#2a3942;border:none;color:white;border-radius:12px;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="email" id="email" placeholder="Email" style="width:100%;padding:12px;margin:8px 0;background:#2a3942;border:none;color:white;border-radius:12px;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="password" id="password" placeholder="Password" style="width:100%;padding:12px;margin:8px 0;background:#2a3942;border:none;color:white;border-radius:12px;">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="signUp()" style="width:100%;padding:14px;margin:15px 0 10px;background:#25d366;border:none;color:white;border-radius:40px;font-weight:bold;cursor:pointer;">Sign Up</button>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="login()" style="width:100%;padding:14px;background:#128c7e;border:none;color:white;border-radius:40px;font-weight:bold;cursor:pointer;">Login</button>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p id="authMessage" style="text-align:center;margin-top:12px;color:#ff8a7a;"></p>
+&nbsp;&nbsp;&nbsp;&nbsp;</div>
 </div>
-
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
-    <div class="logo">
-        WhatzApp<span style="font-size:14px;">✨</span>
-        <div id="currentUserName"></div>
-    </div>
-    <div class="search">
-        <input type="text" id="searchUsersInput" placeholder="🔍 Search users...">
-    </div>
-    <div class="chat-list" id="chatList"></div>
+&nbsp;&nbsp;&nbsp;&nbsp;<div class="logo">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WhatzApp<span style="font-size:14px;">✨</span>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div id="currentUserName"></div>
+&nbsp;&nbsp;&nbsp;&nbsp;</div>
+&nbsp;&nbsp;&nbsp;&nbsp;<div class="search">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="searchUsersInput" placeholder="🔍 Search users...">
+&nbsp;&nbsp;&nbsp;&nbsp;</div>
+&nbsp;&nbsp;&nbsp;&nbsp;<div class="chat-list" id="chatList"></div>
 </div>
-
 <!-- MAIN CHAT -->
 <div class="main" id="mainChat">
-    <div class="topbar">
-        <h2 id="chatHeader">💬 Select a chat</h2>
-        <div>
-            <button onclick="voiceCall()" style="background:none;border:none;color:white;font-size:24px;margin-right:10px;">📞</button>
-            <button onclick="videoCall()" style="background:none;border:none;color:white;font-size:24px;margin-right:10px;">🎥</button>
-        </div>
-    </div>
-    <div class="messages" id="messages"></div>
-    <div class="input-area">
-        <input type="text" id="messageInput" placeholder="Type a message...">
-        <button onclick="sendMessage()">Send</button>
-    </div>
+&nbsp;&nbsp;&nbsp;&nbsp;<div class="topbar">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<h2 id="chatHeader">💬 Select a chat</h2>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="voiceCall()" style="background:none;border:none;color:white;font-size:24px;margin-right:10px;">📞</button>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="videoCall()" style="background:none;border:none;color:white;font-size:24px;margin-right:10px;">🎥</button>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+&nbsp;&nbsp;&nbsp;&nbsp;</div>
+&nbsp;&nbsp;&nbsp;&nbsp;<div class="messages" id="messages"></div>
+&nbsp;&nbsp;&nbsp;&nbsp;<div class="input-area">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" id="messageInput" placeholder="Type a message...">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onclick="sendMessage()">Send</button>
+&nbsp;&nbsp;&nbsp;&nbsp;</div>
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <script>
 // Your Firebase config and script (same as before)
 const firebaseConfig = {
-    apiKey: "AIzaSyAcaYYoGanoGE6kHCOSgssZLG0QKfvsMyg",
-    authDomain: "whatzapp-2903d.firebaseapp.com",
-    projectId: "whatzapp-2903d",
-    storageBucket: "whatzapp-2903d.firebasestorage.app",
-    messagingSenderId: "681395977520",
-    appId: "1:681395977520:web:e082951a5c9623ca69dcf5"
+&nbsp;&nbsp;&nbsp;&nbsp;apiKey: "AIzaSyAcaYYoGanoGE6kHCOSgssZLG0QKfvsMyg",
+&nbsp;&nbsp;&nbsp;&nbsp;authDomain: "whatzapp-2903d.firebaseapp.com",
+&nbsp;&nbsp;&nbsp;&nbsp;projectId: "whatzapp-2903d",
+&nbsp;&nbsp;&nbsp;&nbsp;storageBucket: "whatzapp-2903d.firebasestorage.app",
+&nbsp;&nbsp;&nbsp;&nbsp;messagingSenderId: "681395977520",
+&nbsp;&nbsp;&nbsp;&nbsp;appId: "1:681395977520:web:e082951a5c9623ca69dcf5"
 };
-
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
-
 let currentChatId = null;
 let messagesUnsubscribe = null;
-
 // ... (rest of your script - I kept it same for now)
-
 auth.onAuthStateChanged(async user => {
-    if (user) {
-        document.getElementById("authScreen").style.display = "none";
-        document.getElementById("sidebar").style.display = "flex";
-        document.getElementById("mainChat").classList.add("active");
-        document.getElementById("currentUserName").textContent = `👤 ${user.displayName || user.email.split('@')[0]}`;
-        await loadUsers();
-    }
+&nbsp;&nbsp;&nbsp;&nbsp;if (user) {
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;document.getElementById("authScreen").style.display = "none";
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;document.getElementById("sidebar").style.display = "flex";
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;document.getElementById("mainChat").classList.add("active");
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;document.getElementById("currentUserName").textContent = `👤 ${user.displayName || user.email.split('@')[0]}`;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;await loadUsers();
+&nbsp;&nbsp;&nbsp;&nbsp;}
 });
-
 // Paste the rest of your original script functions here (signUp, login, sendMessage, etc.)
 // For now, use the original ones you had.
-
 </script>
 </body>
 </html>
